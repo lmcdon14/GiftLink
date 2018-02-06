@@ -14,6 +14,7 @@ data on Facebook is represented in 3 ways:
 * edges: connections between nodes: albums, photos, friends, and likes
 * fields: information about nodes: this will include things like gender, 
   name, home town, and so on.
+  
 More information on the graph API can be found [here](https://developers.facebook.com/docs/graph-api/overview)
 
 Getting Data
