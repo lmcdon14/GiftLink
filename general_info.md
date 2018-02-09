@@ -16,3 +16,12 @@ Login tab of our app dashboard. Basic permissions like user_friends, public_prof
 other permissions will. This essentially means that our users will have to allow our app to access certain information. Since
 our app will mainly focus on user data, we will only need read permissions for user attributes (friends, birthday, etc.) and
 user activity (likes). You can find more information on permissions [here](https://developers.facebook.com/docs/facebook-login/permissions/).
+
+## Testing
+
+We will need to write a number of tests in order to ensure that our application is functioning properly. One unique feature
+of the Facebook Graph API is that we will be able to create virtual [test users](https://developers.facebook.com/docs/graph-api/reference/v2.12/test-user) to make API calls.
+
+**Use these API's**
+- /{app-id}/accounts/test-users to create and associate test users.
+- /{test-user-id} to update a test user's password or name.
