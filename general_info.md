@@ -21,7 +21,9 @@ user activity (likes). You can find more information on permissions [here](https
 
 We will need to write a number of tests in order to ensure that our application is functioning properly. One unique feature
 of the Facebook Graph API is that we will be able to create virtual [test users](https://developers.facebook.com/docs/graph-api/reference/v2.12/test-user) to make API calls.
-
 **Use these API's**
 - /{app-id}/accounts/test-users _to create and associate test users_.
 - /{test-user-id} _to update a test user's password or name_.
+
+## Additional Helpful Links
+- [How to use Facebook Graph API and extract data using Python](https://towardsdatascience.com/how-to-use-facebook-graph-api-and-extract-data-using-python-1839e19d6999).
