@@ -1,4 +1,4 @@
-### Nodes on the Facebook Graph API
+## Nodes on the Facebook Graph API
 
 We will be querying nodes from the Facebook Graph API in order to retrieve data from our users. 
 There are two types of nodes: root nodes and non-root nodes. The main difference is that root nodes
@@ -6,7 +6,8 @@ can be directly queried, while non-root nodes must be accessed via root nodes or
 an extensive list of root nodes [here](https://developers.facebook.com/docs/graph-api/reference). A few root nodes that may come in handy for
 our application will be [Friend List](https://developers.facebook.com/docs/graph-api/reference/friend-list), [Object Likes](https://developers.facebook.com/docs/graph-api/reference/v2.12/object/likes), and [Profile](https://developers.facebook.com/docs/graph-api/reference/v2.12/profile).
 
-### Permissions
+
+## Permissions
 
 In order to access data from Facebook, we will have to familiarize ourselves with the necessary permissions that are 
 required to access different nodes. Each permission has its own set of requirements and suggested use cases. All these
