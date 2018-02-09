@@ -1,4 +1,4 @@
-## Nodes on the Facebook Graph API
+## Nodes
 
 We will be querying nodes from the Facebook Graph API in order to retrieve data from our users. 
 There are two types of nodes: root nodes and non-root nodes. The main difference is that root nodes
