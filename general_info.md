@@ -23,5 +23,5 @@ We will need to write a number of tests in order to ensure that our application 
 of the Facebook Graph API is that we will be able to create virtual [test users](https://developers.facebook.com/docs/graph-api/reference/v2.12/test-user) to make API calls.
 
 **Use these API's**
-- /{app-id}/accounts/test-users to create and associate test users.
-- /{test-user-id} to update a test user's password or name.
+- /{app-id}/accounts/test-users -to create and associate test users-.
+- /{test-user-id} -to update a test user's password or name-.
