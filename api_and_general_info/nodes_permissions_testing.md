@@ -28,3 +28,4 @@ of the Facebook Graph API is that we will be able to create virtual [test users]
 
 ## Additional Helpful Links
 - [How to use Facebook Graph API and extract data using Python](https://towardsdatascience.com/how-to-use-facebook-graph-api-and-extract-data-using-python-1839e19d6999)
+- [Guided Example of Graph API](http://nodotcom.org/python-facebook-tutorial.html)
