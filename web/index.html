@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	
+	<link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
+	
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<link rel="stylesheet" type="text/css" href="css/animate.css">
+
+    <title>GiftLink</title>
+  </head>
+  <body>
+	<script>
+	  window.fbAsyncInit = function() {
+		FB.init({
+		  appId      : '2050570888522386',
+		  cookie     : true,
+		  xfbml      : true,
+		  version    : 'v2.12'
+		});
+		  
+		FB.AppEvents.logPageView();   
+
+		FB.getLoginStatus(function(response) {
+			statusChangeCallback(response);
+		});
+	  };
+
+	  (function(d, s, id){
+		 var js, fjs = d.getElementsByTagName(s)[0];
+		 if (d.getElementById(id)) {return;}
+		 js = d.createElement(s); js.id = id;
+		 js.src = "https://connect.facebook.net/en_US/sdk.js";
+		 fjs.parentNode.insertBefore(js, fjs);
+	   }(document, 'script', 'facebook-jssdk'));
+	   
+	   function statusChangeCallback(response){
+		if(response.status === 'connected'){
+			console.log('Logged in and authenticated');
+			document.getElementById('outputBlock').innerHTML = 'Logged in and authenticated \n';
+			document.getElementById('outputBlock').innerHTML += '\n Access Token: \n';
+			document.getElementById('outputBlock').innerHTML += (response.authResponse.accessToken);
+		} else {
+			console.log('Not authenticated');
+			document.getElementById('outputBlock').innerHTML = 'Not authenticated';
+		}
+	   }
+	</script>
+	<div class="container-fluid">
+		<h1 class = "text-center animated fadeInDown" id = "mainHeader">GiftLink</h1>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm">
+				<!-- -->
+				</div>
+				<div class="col-sm" id = "loginPanel">
+					<p class = "text-center">
+					<!-- <img src="img/fb_login.png" onclick = "FB.login(statusChangeCallback)" alt="Facebook" class = "img-responsive center-block" /> -->
+					<button onclick="FB.login(statusChangeCallback)">Login with Facebook</button>
+					<br><br>
+					<p class ="text-center" id = "outputBlock"></p>
+					</p>
+				</div>
+				<div class="col-sm">
+				<!-- -->
+				</div>
+			</div>
+			<div class = "row">
+				<div class = "col">
+				<p class = "text-center">
+					<a href = "https://github.com/COSCS340/GiftLink/blob/master/PrivacyPolicy.md">Privacy Policy</a>
+				</p>
+				</div>
+			</div>
+		</div>
+	</div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
