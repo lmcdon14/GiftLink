@@ -46,6 +46,8 @@
   
   ### Future Goals:
    
+  - Create Facebook page for the application with a link to our webpage
+  - Create a wish-list feature for users to add links to gifts that they would want themselves
   - Add calendar with upcoming birthdays and holidays to UI
   - Add simple reminders feature for upcoming gift-giving dates
   - Submit application for app review in order to gain full access to permissions for non-developers
