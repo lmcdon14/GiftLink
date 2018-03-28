@@ -72,7 +72,7 @@ With a combination of various web development libraries and frameworks (Bootstra
   ## Team
   **Frankie Betancourt**:
   
-  **Isaac Ige**: Developer
+  **Isaac Ige**: Developer  
   Responsibilities / Contributions:
  - Guide the direction of development
  - Discover what resources/libraries are available that may aid development
@@ -81,8 +81,12 @@ With a combination of various web development libraries and frameworks (Bootstra
 
   **Landen McDonald**:
   
-  **Zack Strickland**:
-  
+  **Zack Strickland**: Developer  
+  Responsibilities:
+  - Implement and test API features
+  - Design graphical user interface to meet Facebook guidelines
+  - Ensure high quality user experience
+  - Code maintenance
   
   
   ## Project Management
