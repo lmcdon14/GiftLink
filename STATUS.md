@@ -85,21 +85,21 @@ Below are a few screenshots displaying some of the progress that has been made o
   
   ## Team
   **Frankie Betancourt**: Developer
- Responsibilities / Contributions:
+  Responsibilities / Contributions:
  - API Implementation and Testing
  - Documentation
  - Code validation and debugging
  - Sprint task evaluation
   
   **Isaac Ige**: Developer
- Responsibilities / Contributions:
+  Responsibilities / Contributions:
  - Guide the direction of development
  - Discover what resources/libraries are available that may aid development
  - Implement and test program features
  - Help explain/clarify program logic
 
   **Landen McDonald**: Task Supervisor
- Responsibilities / Contributions:
+  Responsibilities / Contributions:
  - Organize group meetings, generate team objectives, and devise feature suggestions
  - Draft basic documentation such as privacy policy, README, and general api information 
  - Develop Facebook page for application
@@ -107,7 +107,7 @@ Below are a few screenshots displaying some of the progress that has been made o
  In the future, Landen plans to slightly alter his role to become more of a feature developer for the **GiftLink** software. 
   
   **Zack Strickland**: Developer  
-  Responsibilities:
+  Responsibilities / Contributions:
   - Implement and test API features
   - Design graphical user interface to meet Facebook guidelines
   - Ensure high quality user experience
