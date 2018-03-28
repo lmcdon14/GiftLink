@@ -60,11 +60,14 @@ With a combination of various web development libraries and frameworks (Bootstra
 
 Below are a few screenshots displaying some of the progress that has been made on **GiftLink** thus far:
 
-![alt text](screenshots/LoginScreen.png "**Figure 1.** This is our login screen where users will connect to Facebook.")
+![alt text](screenshots/LoginScreen.png "Login screen")
+**Figure 1.** This is our login screen where users will connect to Facebook.
 
-![alt text](screenshots/FriendsAndInterest.png "**Figure 2.** Here we see a list of the user's friends along with their interests.")
+![alt text](screenshots/FriendsAndInterests.png "User's friends list with their interests")
+**Figure 2.** Here we see a list of the user's friends along with their interests.
 
-![alt text](screenshots/AmazonSearch.png "**Figure 3.** Using the user's friend's likes, **GiftLink** generates a link to a potential gift idea for them.")
+![alt text](screenshots/AmazonSearch.png "Gift search on Amazon")
+**Figure 3.** Using the user's friend's likes, **GiftLink** generates a link to a potential gift idea for them.
 
 
   ### Future Goals:
