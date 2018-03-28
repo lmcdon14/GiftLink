@@ -103,7 +103,7 @@ Below are a few screenshots displaying some of the progress that has been made o
  - Organize group meetings, generate team objectives, and devise feature suggestions
  - Draft basic documentation such as privacy policy, README, and general api information 
  - Develop Facebook page for application
- - Create test users and begin writing test scripts accordingly 
+ - Create test users and begin writing test scripts accordingly   
  In the future, Landen plans to slightly alter his role to become more of a feature developer for the **GiftLink** software. 
   
   **Zack Strickland**: Developer  
