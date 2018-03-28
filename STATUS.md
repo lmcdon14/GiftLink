@@ -85,11 +85,11 @@ Below are a few screenshots displaying some of the progress that has been made o
   
   ## Team
   **Frankie Betancourt**:
-  Responsibilities:
-  -API Implementation and Testing
-  -Documentation
-  -Code validation and debugging
-  -Sprint task evaluation
+ Responsibilities / Contributions:
+ -API Implementation and Testing
+ -Documentation
+ -Code validation and debugging
+ -Sprint task evaluation
   
   **Isaac Ige**: Developer
  Responsibilities / Contributions:
