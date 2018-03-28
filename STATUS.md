@@ -99,13 +99,14 @@ Below are a few screenshots displaying some of the progress that has been made o
  - Draft basic documentation such as privacy policy, README, and general api information 
  - Develop Facebook page for application
  - Create test users and begin writing test scripts accordingly
+ In the future, Landen plans to slightly alter his role to become more of a feature developer for the **GiftLink** software. 
   
   **Zack Strickland**:
   
   
   
   ## Project Management
-  The development of our project is currently on schedule as described in our project proposal. Initially, we would have liked to have submitted the application for review by now, but upon reading the strict Facebook guidelines that must be met in order to have the application approved, we agreed that it would be best to polish off the formatting and UI elements first.
+  The development of our project is currently on schedule as described in our project proposal. Initially, we would have liked to have submitted the application for review by now, but upon reading the strict Facebook guidelines that must be met in order to have the application approved, we agreed that it would be best to polish off the formatting and UI elements first. Although we were running slightly behind schedule at the end of Sprint 2 due to the pywebview inconsistencies, the additional week that was built into Sprint 3 for Spring Break allowed the team to more than make up for the lost time.
   
   
   
