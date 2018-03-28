@@ -87,7 +87,7 @@ Below are a few screenshots displaying some of the progress that has been made o
   **Frankie Betancourt**:
   
   **Isaac Ige**: Developer
-  
+
   Responsibilities / Contributions:
  - Guide the direction of development
  - Discover what resources/libraries are available that may aid development
@@ -104,8 +104,12 @@ Below are a few screenshots displaying some of the progress that has been made o
  
  In the future, Landen plans to slightly alter his role to become more of a feature developer for the **GiftLink** software. 
   
-  **Zack Strickland**:
-  
+  **Zack Strickland**: Developer  
+  Responsibilities:
+  - Implement and test API features
+  - Design graphical user interface to meet Facebook guidelines
+  - Ensure high quality user experience
+  - Code maintenance
   
   
   ## Project Management
