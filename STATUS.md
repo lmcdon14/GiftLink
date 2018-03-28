@@ -87,21 +87,18 @@ Below are a few screenshots displaying some of the progress that has been made o
   **Frankie Betancourt**:
   
   **Isaac Ige**: Developer
-
-  Responsibilities / Contributions:
+ Responsibilities / Contributions:
  - Guide the direction of development
  - Discover what resources/libraries are available that may aid development
  - Implement and test program features
  - Help explain/clarify program logic
 
   **Landen McDonald**: Task Supervisor
-  
-  Responsibilities / Contributions:
+ Responsibilities / Contributions:
  - Organize group meetings, generate team objectives, and devise feature suggestions
  - Draft basic documentation such as privacy policy, README, and general api information 
  - Develop Facebook page for application
  - Create test users and begin writing test scripts accordingly
- 
  In the future, Landen plans to slightly alter his role to become more of a feature developer for the **GiftLink** software. 
   
   **Zack Strickland**: Developer  
@@ -115,7 +112,10 @@ Below are a few screenshots displaying some of the progress that has been made o
   ## Project Management
   The development of our project is currently on schedule as described in our project proposal. Initially, we would have liked to have submitted the application for review by now, but upon reading the strict Facebook guidelines that must be met in order to have the application approved, we agreed that it would be best to polish off the formatting and UI elements first. Although we were running slightly behind schedule at the end of Sprint 2 due to the pywebview inconsistencies, the additional week that was built into Sprint 3 for Spring Break allowed the team to more than make up for the lost time.
   
+  Essentially, the only issue that is currently pushed onto our backlog is the implementation of a reminder feature that notifies users of upcoming holidays. This will pair well with the addition of a calendar feature to our user interface and will likely be developed in tandem accordingly. Overall, the development of the **GiftLink** software has proven to progress well and we believe that it is fully prepared for the final phase of feature implementation.
   
   
   ## Reflection
-  Ultimately, Socially Gifted had a slow start with the implementation of **GiftLink** due to the unforseen complications that arose with the development of the intended desktop framework. However, once we pivoted to the current web application design, productivity rapidly accelerated as we were able to quickly construct a functional application.
+  Ultimately, Socially Gifted had a slow start with the implementation of **GiftLink** due to the unforseen complications that arose with the development of the intended desktop framework. However, once we pivoted to the current web application design, productivity rapidly accelerated as we were able to quickly construct a functional application. Utilizing this updated framework for project development, the team is confident that **GiftLink** will continue to evolve into a user-friendly experience that offers our users unparalleled convenience and functionality.
+  
+  Most importantly, the Socially Gifted team has proven to be able to effectively collaborate and resolve conflicts and issues in our software in order to develop a functional application. The project workflow has been evenly divided amongst team members and we believe that we have defined a strong direction for our software moving forward. We do not plan on making any major further changes to our development plan for the final iteration of **GiftLink**.
