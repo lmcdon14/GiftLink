@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <!-- Required meta tags -->
@@ -8,158 +8,56 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	
+	<!-- Google Fonts -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 	
-	<link rel="stylesheet" type="text/css" href="css/animate.css">
-	<link rel="stylesheet" type="text/css" href="css/fb-buttons.css">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
 
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<link rel="stylesheet" type = "text/css"  href="css/fb-buttons.css">
+	<link rel="stylesheet" type = "text/css"  href="css/main.css">
 	
-    <title>GiftLink</title>
+	<!-- Favicon -->
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
+	
+	<!-- JavaScript Libraries -->
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script type = "application/javascript" src = "js/fb_init.js"></script>
+	<script type = "application/javascript" src = "js/glink.js"></script>
+	<title>GiftLink</title>
   </head>
   <body>
-	<script>
-	  window.fbAsyncInit = function() {
-		FB.init({
-		  appId      : '2050570888522386',
-		  cookie     : true,
-		  xfbml      : true,
-		  version    : 'v2.12'
-		});
-		  
-		FB.AppEvents.logPageView();   
-
-		FB.getLoginStatus(function(response) {
-			statusChangeCallback(response);
-		});
-	  };
-	  
-	  (function(d, s, id){
-		 var js, fjs = d.getElementsByTagName(s)[0];
-		 if (d.getElementById(id)) {return;}
-		 js = d.createElement(s); js.id = id;
-		 js.src = "https://connect.facebook.net/en_US/sdk.js";
-		 fjs.parentNode.insertBefore(js, fjs);
-	   }(document, 'script', 'facebook-jssdk'));
-	   
-	   var amazonLink = 'https://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords=';
-	   
-	   function statusChangeCallback(response){
-
-	   }
-	   
-	   function logoutFunction(response){
-		document.getElementById('outputBlock').innerHTML = 'You have logged out of GiftLink';
-		$('#logoutPanel').addClass('hidden');
-		$('#loginPanel').removeClass('hidden');
-		$('#nameBadge').text('');
-		$('#profilePic').attr('src', '');
-	   }
-	   
-	   function specialLogin(){
-		FB.login(function(response) {
-			
-			if(response.status === 'connected'){
-			console.log('Logged in and authenticated');
-			
-			$('#outputBlock').text('');
-			$('#loginPanel').addClass('hidden');
-			$('#logoutPanel').removeClass('hidden');
-			
-			FB.api('/me', {fields: 'id,name,birthday'}, function(response) {
-				$('#profilePic').attr('src', 'http://graph.facebook.com/' + response.id + '/picture?type=normal');
-				$('#nameBadge').text(response.name);
-			});
-			
-			listFriends();
-		} 
-		
-		else {
-			console.log('Not authenticated');
-			document.getElementById('outputBlock').innerHTML = 'Log in to get started';
-		}
-		
-		}, {scope:'email,user_birthday,user_likes,user_friends', return_scopes:true});
-			
-	   }
-	   
-	   function listFriends() {
-		FB.api('/me/friends', {fields: 'id,name,birthday'}, function (response) {
-				if (response && !response.error) {
-					console.log(response);
-					document.getElementById('outputBlock').innerHTML += "<br>Friends who use GiftLink: <br>";
-					var friend;
-					for (friend in response.data) {
-						document.getElementById('outputBlock').innerHTML += "<br>" 
-							+ response.data[friend].name + " -- birthday: " + response.data[friend].birthday;
-					}
-				}
-		});
-	   }
-	   
-	   function listMusic(){
-	   	FB.api('/me/music', function (response) {
-				if (response && !response.error) {
-				console.log(response);
-				document.getElementById('outputBlock').innerHTML += "<br>Music: <br>";
-				var item;
-				for(item in response.data) {
-					document.getElementById('outputBlock').innerHTML += "<br>";
-					var name = response.data[item].name;
-					var sname = name.replace(/ /g, "+");
-					var outputBlock = document.getElementById('outputBlock');
-					var aTag = document.createElement('a');
-					aTag.setAttribute("target", "_blank");
-					aTag.setAttribute("href", amazonLink + sname);
-					aTag.innerHTML = name;
-					outputBlock.appendChild(aTag);
-				 }
-				}
-			});	
-	   }
-	</script>
-	<div class="container-fluid">
-        <h1 class = "text-center" id = "mainHeader">GiftLink</h1>
+	<div class="container-fluid" id="wrapper">
+        <h1 class="text-center" id="mainHeader">Gift<span style="color:#3b5998;">Link</span></h1>
         <div class="container">
-            <div class="row">
-                <div class="col-sm">
-                <!-- -->
-                </div>
-                <div class="col-sm" id = "mainPanel">
-                    <div class="inner-panel" id="loginPanel">
-                        <button class="uibutton large confirm" id="loginControl" onclick="specialLogin()">Login with Facebook</button>
-                    </div>
-                    <div class="inner-panel fluid-panel hidden" id="logoutPanel">
-                        <span>
-                            <img id="profilePic" height="27" width="27"></img>
-                            <span id="nameBadge"></span>
-                        </span>
-                        <button class="uibutton large confirm" id="logoutControl" onclick="FB.logout(logoutFunction)">Logout</button>
-                    </div>
-                    <p class = "text-center">
-                    <p class ="text-center" id = "outputBlock">Log in to get started</p>
-                    </p>
-                </div>
-                <div class="col-sm">
-                <!-- -->
-                </div>
-            </div>
-            <div class = "row">
-                <div class = "col">
-                <p class = "text-center">
-                    <a href = "https://github.com/COSCS340/GiftLink/blob/master/PrivacyPolicy.md">Privacy Policy</a><br>
-                    <!--<button class="uibutton large confirm hidden" onclick="FB.logout(logoutFunction)">Logout</button>-->
-                </p>
-                </div>
+            <div class="row" id="mainPanel">
+				<div class="col-12" style="padding: 0">
+					<div class="inner-panel top-panel" style = "background-color: #f6f7f9;" id="loginPanel">
+						<button class="uibutton large confirm" id="loginControl" onclick="appLogin()">Login with Facebook</button>
+					</div>
+					<div class="inner-panel top-panel fluid-panel hidden" id="logoutPanel">
+						<span>
+							<img id="profilePic" height="27" width="27"></img>
+							<span id="nameBadge"></span>
+						</span>
+						<button class="uibutton large confirm" id="logoutControl" onclick="FB.logout(appLogout)">Logout</button>
+					</div>
+					<p class="text-center hidden" id="outputBlock"></p>
+					<div class="hidden" id="friendBlock"></div>
+					<div id="introBlock">
+						<h5 class="text-center" id="introMessage">Surprise your friends with the perfect gifts</h5>
+						<p class="text-center">
+							<img src="images/gift-icon-blue.png" height="200" width="200"></img>
+						</p>
+					</div>
+					<div class="inner-panel bottom-panel" id="footerPanel">
+						<span>© 2018 Socially Gifted · </span>
+						<a href = "https://github.com/COSCS340/GiftLink/blob/master/PrivacyPolicy.md">Privacy Policy</a>
+					</div>
+				</div>
             </div>
         </div>
     </div>
-
-	
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </body>
 </html>
