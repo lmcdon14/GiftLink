@@ -73,7 +73,9 @@ function appLogin(){
 }
 
 
-//Fills up the #friendBlock with collapsible panels of the user's friends
+/**
+ ** Fills up the friendBlock with collapsible panels of the user's friends
+ **/
 function listFriends() {
 	FB.api('/me/friends', {fields: 'id,name,birthday'}, 
 		function (response) {
@@ -135,7 +137,9 @@ function appLogout(response){
 	$('#profilePic').attr('src', '');
 }
 
-//Case insensitive search (i.e. Does str1 contain str2 ?)
+/**
+ ** Comparator for case insensitive search (i.e. Does str1 contain str2 ?)
+ **/
 function strCmp(str1, str2){
 	return (str1.toLowerCase().indexOf(str2.toLowerCase()) >= 0); 
 }
