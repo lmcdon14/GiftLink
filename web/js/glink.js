@@ -148,10 +148,10 @@ function strCmp(str1, str2){
  ** Toggles friends-sorting by name, ascending or descending
  **/
 function toggleSortName() {
-	if ($('#friendBlock').attr('data-sort') != 0)
-		$('#friendBlock').attr('data-sort', 0);
+	if ($('#friendBlock').attr('data-sort') != 'name-ascend')
+		$('#friendBlock').attr('data-sort', 'name-ascend');
 	else
-		$('#friendBlock').attr('data-sort', 1);
+		$('#friendBlock').attr('data-sort', 'name-descend');
 	
 	listFriends();
 }
@@ -160,10 +160,10 @@ function toggleSortName() {
  ** Toggles friends-sorting by birthday, ascending or descending
  **/
 function toggleSortBirthday() {
-	if ($('#friendBlock').attr('data-sort') != 2)
-		$('#friendBlock').attr('data-sort', 2);
+	if ($('#friendBlock').attr('data-sort') != 'bday-ascend')
+		$('#friendBlock').attr('data-sort', 'bday-ascend');
 	else
-		$('#friendBlock').attr('data-sort', 3);
+		$('#friendBlock').attr('data-sort', 'bday-descend');
 	
 	listFriends();
 }
@@ -172,12 +172,12 @@ function toggleSortBirthday() {
  ** Updates friends list, sorted by name or birthday
  **/
 function sortFriends(a, b) {
-	switch(parseInt($('#friendBlock').attr('data-sort'))) {
-		case 0: return a.name.localeCompare(b.name);
-		case 1: return b.name.localeCompare(a.name);
-		case 2: return (Date.parse(b.birthday) <= Date.parse(a.birthday) ? 1 : -1);
-		case 3: return (Date.parse(a.birthday) <= Date.parse(b.birthday) ? 1 : -1);
-	}
+	var sortby = $('#friendBlock').attr('data-sort');
+	
+	if (sortby == 'name-ascend') return a.name.localeCompare(b.name);
+	if (sortby == 'name-descend') return b.name.localeCompare(a.name);
+	if (sortby == 'bday-ascend') return (Date.parse(b.birthday) <= Date.parse(a.birthday) ? 1 : -1);
+	if (sortby == 'bday-descend') return (Date.parse(a.birthday) <= Date.parse(b.birthday) ? 1 : -1);
 }
 
 
