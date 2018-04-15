@@ -5,7 +5,9 @@ var amazonLink = 'https://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Da
 //Enable or disable output to console.log()
 const DEBUG_MODE =  1;
 
-
+/**
+ ** Log user in to Facebook and begin reading data in
+ **/
 function appLogin(){
 	FB.login(function(response) {
 
@@ -20,11 +22,15 @@ function appLogin(){
 			$('#introBlock').addClass('hidden');
 			$('#outputBlock').removeClass('hidden')
 							 .empty()
-							 .append('<br>Click on a friend below to see their interests<br><br>')
-							 .append('Search Friends: <input id = "friendSearch" type="text" name="searchName" value=""><br>');
+							 .append('<br>Click on a friend to see their interests<br><br>')
+			$('#friendSearch').removeClass('hidden');
+			$('#searchTools').removeClass('hidden');
 			$('#friendBlock').removeClass('hidden');
 			$('#loginPanel').addClass('hidden');
 			$('#logoutPanel').removeClass('hidden');
+			
+			$('#sortName').on('click', toggleSortName);
+			$('#sortBirthday').on('click', toggleSortBirthday);
 			
 			//Setting the top bar to display the the logged in user's profile picture and name
 			FB.api('/me', {fields: 'id,name,birthday'}, function(response) {
@@ -42,7 +48,7 @@ function appLogin(){
 				var inputText = $('#friendSearch').val();
 
 				$(".fb-user").each(function(){
-					var found = strCmp($(this).attr("data-blockID"),inputText);
+					var found = strCmp($(this).attr("data-block-id"),inputText);
 					if(found){
 						if(DEBUG_MODE) console.log('found');
 						$(this).removeClass('hidden');
@@ -69,46 +75,59 @@ function appLogin(){
 
 //Fills up the #friendBlock with collapsible panels of the user's friends
 function listFriends() {
-		FB.api('/me/friends', {fields: 'id,name,birthday'}, 
-			function (response) {
-				if(DEBUG_MODE) console.log(response);
+	FB.api('/me/friends', {fields: 'id,name,birthday'}, 
+		function (response) {
+			if(DEBUG_MODE) console.log(response);
+			
+			$('#friendBlock').empty();
+			var friend;
+			var friends = response.data.sort(sortFriends);
+			
+			for(friend in friends){
+				var user_id = friends[friend].id;
+				var name = friends[friend].name;
+				var birthday = friends[friend].birthday;
 				
-				$('#friendBlock').empty();
-				var friend;
-				var friends = response.data.sort(function(a, b) {return a.name.localeCompare(b.name);});
+				//Wrapping each user in a unique div to make the search filtering easier
+				$('#friendBlock').append('<div class = "fb-user" data-block-id = "' + name + '"></div>');
 				
-				for(friend in friends){
-					var user_id = friends[friend].id;
-					var name = friends[friend].name;
-					var birthday = friends[friend].birthday;
-					
-					//Wrapping each user in a unique div to make the search filtering easier
-					$('#friendBlock').append('<div class = "fb-user" data-blockID = "' + name + '"></div>');
-					
-					//jQuery unique to the current friend's block 
-					var query = "[data-blockID = '" + name + "']";
-					$(query).append(''
-									 + '<a data-toggle="collapse" data-target="#' + user_id + '-interests">'
-									 + '<div class="friend-panel fluid-panel" id="' + user_id + '-panel">'
-									 + '<span><img class="friend-pic" src="http://graph.facebook.com/' + user_id + '/picture?type=normal"></img>'
-									 + '<span class="friend-name">' + name + '</span></span><span class="friend-birthday">' + birthday + '</span></div></a>'
-									 + '<div class="collapse interestPanel" id="' + user_id + '-interests">'
-									 + '<div class="row">'
-									 + '<div class="col-4"><p class = "text-center" id = "' + user_id + '-musicList">'
-									 + '<button onclick="listMusic(' + user_id + ')">Music</button></p></div>'
-									 + '<div class="col-4"><p class = "text-center" id = "' + user_id + '-televisionList">'
-									 + '<button onclick="listTelevision(' + user_id + ')">Television</button></p></div>'
-									 + '<div class="col-4"><p class = "text-center" id = "' + user_id + '-moviesList">'
-									 + '<button onclick="listMovies(' + user_id + ')">Movies</button></p></div></div></div>');
-				}
-			}
-		);
-	}
+				//jQuery unique to the current friend's block 
+				var query = "[data-block-id = '" + name + "']";
+				$(query).append(''
+								 + '<a data-toggle="collapse" data-target="#' + user_id + '-interests">'
+								 + '<div class="friend-panel fluid-panel" id="' + user_id + '-panel">'
+								 + '<span><img class="friend-pic" src="http://graph.facebook.com/' + user_id + '/picture?type=normal"></img>'
+								 + '<span class="friend-name">' + name + '</span></span><span class="friend-birthday">' + birthday + '</span></div></a>'
+								 
+								 + '<div class="collapse" id="' + user_id + '-interests">'
+								 + '<a data-toggle="collapse" data-target="#' + user_id + '-musicList">'
+								 + '<div class="interest-panel">Music</div></a>'
+								 + '<div class="collapse" id="' + user_id + '-musicList"></div>'
+								 
+								 + '<a data-toggle="collapse" data-target="#' + user_id + '-moviesList">'
+								 + '<div class="interest-panel">Movies</div></a>'
+								 + '<div class="collapse" id="' + user_id + '-moviesList"></div>'
+								 
+								 + '<a data-toggle="collapse" data-target="#' + user_id + '-televisionList">'
+								 + '<div class="interest-panel">Television</div></a>'
+								 + '<div class="collapse" id="' + user_id + '-televisionList"></div></div>'
+								);
 
+				$('#' + user_id + '-panel').on('click', {id: user_id}, listInterests);
+			}
+		}
+	);
+}
+
+/**
+ ** Log user out of Facebook and remove data
+ **/
 function appLogout(response){
 	$('#introBlock').removeClass('hidden');
 	$('#outputBlock').addClass('hidden')
 					 .empty();
+	$('#friendSearch').addClass('hidden');
+	$('#searchTools').addClass('hidden');
 	$('#friendBlock').addClass('hidden');
 	$('#logoutPanel').addClass('hidden');
 	$('#loginPanel').removeClass('hidden');
@@ -121,32 +140,64 @@ function strCmp(str1, str2){
 	return (str1.toLowerCase().indexOf(str2.toLowerCase()) >= 0); 
 }
 
-
-
-//Interest/Like Category Functions
-function listMusic(userID) {
-	updateInterest(userID, 'music');
+/**
+ ** Toggles friends-sorting by name, ascending or descending
+ **/
+function toggleSortName() {
+	if ($('#friendBlock').attr('data-sort') != 0)
+		$('#friendBlock').attr('data-sort', 0);
+	else
+		$('#friendBlock').attr('data-sort', 1);
+	
+	listFriends();
 }
-function listTelevision(userID) {
-	updateInterest(userID, 'television');
+
+/**
+ ** Toggles friends-sorting by birthday, ascending or descending
+ **/
+function toggleSortBirthday() {
+	if ($('#friendBlock').attr('data-sort') != 2)
+		$('#friendBlock').attr('data-sort', 2);
+	else
+		$('#friendBlock').attr('data-sort', 3);
+	
+	listFriends();
 }
-function listMovies(userID) {
-	updateInterest(userID, 'movies');
+
+/**
+ ** Updates friends list, sorted by name or birthday
+ **/
+function sortFriends(a, b) {
+	switch(parseInt($('#friendBlock').attr('data-sort'))) {
+		case 0: return a.name.localeCompare(b.name);
+		case 1: return b.name.localeCompare(a.name);
+		case 2: return (Date.parse(b.birthday) <= Date.parse(a.birthday) ? 1 : -1);
+		case 3: return (Date.parse(a.birthday) <= Date.parse(b.birthday) ? 1 : -1);
+	}
 }
 
 
-/*  
-	Customizable function to get and update a user's interests from the appropriate endpoint
-*/
+/**
+ ** Wrapper: updates all user interests
+ **/
+function listInterests(event) {
+	updateInterest(event.data.id, 'music');
+	updateInterest(event.data.id, 'movies');
+	updateInterest(event.data.id, 'television');
+}
 
-function updateInterest(userID, interest){
-	var endpoint = '/' + userID + '/' + interest;
+
+/** 
+ ** Customizable function to get and update a user's interests from the appropriate endpoint
+ **/
+function updateInterest(user_id, interest){
+	var endpoint = '/' + user_id + '/' + interest;
 	if(DEBUG_MODE) console.log(endpoint);
 	
 	var target;
-	if(interest == "music"){ target = ('' + userID + '-musicList'); }
-	else if(interest == "television"){ target = ('' + userID + '-televisionList'); }
-	else if(interest == "movies"){ target = ('' + userID + '-moviesList'); }
+	if(interest == 'music'){ target = ('' + user_id + '-musicList'); }
+	else if(interest == 'television'){ target = ('' + user_id + '-televisionList'); }
+	else if(interest == 'movies'){ target = ('' + user_id + '-moviesList'); }
 
 	FB.api(endpoint, function(response){
 		if(response && !response.error){
@@ -156,27 +207,28 @@ function updateInterest(userID, interest){
 }
 
 
-/*
-	Iterates over a response's data, generates amazonSearch link, and appends it to
-	the targetElem
-*/
-function listInterest(response, targetElem){
-	query = '#' + targetElem;
+/**
+ ** Iterates over a response's data, generates amazonSearch link, and appends it to
+ ** the target
+ **/
+function listInterest(response, target){
+	query = '#' + target;
 	
 	if(DEBUG_MODE){
-		console.log(targetElem);
+		console.log(target);
 		console.log(query);
 		console.log(response);
 	}
 	
+	$(query).empty();
 	for(item in response.data) {
-		$(query).append('<br>');
 		var name = response.data[item].name;
 		var sname = name.replace(/ /g, "+");
-		$(query).append('<a class = "jqPlaceholder" target = "_blank" href = "" ></a>');
+		$(query).append('<div class="interest-item-panel">'
+						+ '<a class = "jqPlaceholder" target = "_blank" href = "" ></a>'
+						+ '</div>');
 		$('.jqPlaceholder').attr('href', amazonLink + sname);
 		$('.jqPlaceholder').html(name);
 		$('.jqPlaceholder').removeClass('jqPlaceholder');
 	}
 }
-
