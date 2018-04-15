@@ -36,7 +36,6 @@ function appLogin() {
 			FB.api('/me', {fields: 'id,name,birthday,locale'}, function(response) {
 				$('#profilePic').attr('src', 'http://graph.facebook.com/' + response.id + '/picture?type=normal');
 				$('#nameBadge').text(response.name);
-				alert('locale: ' + response.locale);
 			});
 			
 			//Grab and list the user's friends in the #friendBlock HTML element
