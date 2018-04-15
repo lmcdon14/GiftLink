@@ -8,7 +8,7 @@ const DEBUG_MODE =  1;
 /**
  ** Log user in to Facebook and begin reading data in
  **/
-function appLogin(){
+function appLogin() {
 	FB.login(function(response) {
 
 		if(response.status === 'connected'){
@@ -33,14 +33,14 @@ function appLogin(){
 			$('#sortBirthday').on('click', toggleSortBirthday);
 			
 			//Setting the top bar to display the the logged in user's profile picture and name
-			FB.api('/me', {fields: 'id,name,birthday'}, function(response) {
+			FB.api('/me', {fields: 'id,name,birthday,locale'}, function(response) {
 				$('#profilePic').attr('src', 'http://graph.facebook.com/' + response.id + '/picture?type=normal');
 				$('#nameBadge').text(response.name);
+				alert('locale: ' + response.locale);
 			});
 			
 			//Grab and list the user's friends in the #friendBlock HTML element
 			listFriends();
-
 
 			//Dynamically filter friends as you type by attaching an event listener to the #friendSearch input field
 			$('#friendSearch').on("keyup", function() {
@@ -121,10 +121,11 @@ function listFriends() {
 	);
 }
 
+
 /**
- ** Log user out of Facebook and remove data
+ ** Logs user out of Facebook and removes associated data
  **/
-function appLogout(response){
+function appLogout() {
 	$('#introBlock').removeClass('hidden');
 	$('#outputBlock').addClass('hidden')
 					 .empty();
@@ -137,11 +138,15 @@ function appLogout(response){
 	$('#profilePic').attr('src', '');
 }
 
+
 /**
- ** Comparator for case insensitive search (i.e. Does str1 contain str2 ?)
+ ** Determines whether string b is a substring of a
+ ** @param {string} a The string to inspect
+ ** @param {string} b The substring for which to search
+ ** @return {bool} Whether the substring b was found in a
  **/
-function strCmp(str1, str2){
-	return (str1.toLowerCase().indexOf(str2.toLowerCase()) >= 0); 
+function strCmp(a, b) {
+	return (a.toLowerCase().indexOf(b.toLowerCase()) >= 0); 
 }
 
 /**
@@ -169,7 +174,10 @@ function toggleSortBirthday() {
 }
 
 /**
- ** Updates friends list, sorted by name or birthday
+ ** Compares two friend objects by name or by birthday
+ ** @param {Object} a First user to compare
+ ** @param {Object} b Second user to compare
+ ** @returns {int} The result of comparison (i.e. 1, 0, or -1)
  **/
 function sortFriends(a, b) {
 	var sortby = $('#friendBlock').attr('data-sort');
@@ -182,7 +190,8 @@ function sortFriends(a, b) {
 
 
 /**
- ** Wrapper: updates all user interests
+ ** Updates all user interests (wrapper for updateInterest)
+ ** @param {JSON} event JQuery event handler data object
  **/
 function listInterests(event) {
 	updateInterest(event.data.id, 'music');
@@ -193,8 +202,10 @@ function listInterests(event) {
 
 /** 
  ** Customizable function to get and update a user's interests from the appropriate endpoint
+ ** @param {int} user_id Graph API ID of user node
+ ** @param {string} interest Interest category to list
  **/
-function updateInterest(user_id, interest){
+function updateInterest(user_id, interest) {
 	var endpoint = '/' + user_id + '/' + interest;
 	if(DEBUG_MODE) console.log(endpoint);
 	
@@ -212,11 +223,13 @@ function updateInterest(user_id, interest){
 
 
 /**
- ** Iterates over a response's data, generates amazonSearch link, and appends it to
- ** the target
+ ** Iterates over data from a Graph API response, generates search urls, and
+ ** places links to each in the target element
+ ** @param {JSON} response Graph API edge, containing an array of user interests
+ ** @param {string} target ID of element to store list of interests
  **/
-function listInterest(response, target){
-	query = '#' + target;
+function listInterest(response, target) {
+	var query = '#' + target;
 	
 	if(DEBUG_MODE){
 		console.log(target);
