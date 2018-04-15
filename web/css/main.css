@@ -32,6 +32,10 @@ a {
 	color: #666666;
 }
 
+#privacyPolicyBody {
+	padding: 16px;
+}
+
 #wrapper {
 	padding: 5% 15px 5% 15px;
 }
