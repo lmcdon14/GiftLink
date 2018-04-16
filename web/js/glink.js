@@ -8,7 +8,9 @@ const DEBUG_MODE =  1;
 /**
  ** Log user in to Facebook and begin reading data in
  **/
-function appLogin() {
+function appLogin(){
+	$(".loader").removeClass('hidden');
+	$('#introBlock').addClass('hidden');
 	FB.login(function(response) {
 
 		if(response.status === 'connected'){
@@ -19,7 +21,7 @@ function appLogin() {
 			 for searching/filtering friends
 		  */
 		  
-			$('#introBlock').addClass('hidden');
+			$(".loader").addClass('hidden');
 			$('#outputBlock').removeClass('hidden')
 							 .empty()
 							 .append('<br>Click on a friend to see their interests<br><br>')
