@@ -6,6 +6,38 @@ var amazonLink = 'https://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Da
 const DEBUG_MODE =  1;
 
 /**
+ ** Extends animateCss to jQuery.
+ ** Allows for easily applying animations to elements
+ ** and can specify a function to execute when animation completes
+ **/
+$.fn.extend({
+  animateCss: function(animationName, callback) {
+    var animationEnd = (function(el) {
+      var animations = {
+        animation: 'animationend',
+        OAnimation: 'oAnimationEnd',
+        MozAnimation: 'mozAnimationEnd',
+        WebkitAnimation: 'webkitAnimationEnd',
+      };
+
+      for (var t in animations) {
+        if (el.style[t] !== undefined) {
+          return animations[t];
+        }
+      }
+    })(document.createElement('div'));
+
+    this.addClass('animated ' + animationName).one(animationEnd, function() {
+      $(this).removeClass('animated ' + animationName);
+
+      if (typeof callback === 'function') callback();
+    });
+
+    return this;
+  },
+});
+
+/**
  ** Log user in to Facebook and begin reading data in
  **/
 function appLogin(){
@@ -13,59 +45,12 @@ function appLogin(){
 
 		if(response.status === 'connected'){
 			if(DEBUG_MODE) console.log('Logged in and authenticated');
-			
-		  /* Setting up the HTML/sections for each block of output after a successful login
-			 introBlock for displaying announcements/instructions and contains an input field (textbox)
-			 for searching/filtering friends
-		  */
-		  
-			$('#introBlock').addClass('hidden');
-			$('#outputBlock').removeClass('hidden')
-							 .empty()
-							 .append('<br>Click on a friend to see their interests<br><br>')
-			$('#friendSearch').removeClass('hidden');
-			$('#searchTools').removeClass('hidden');
-			$('#friendBlock').removeClass('hidden');
-			$('#loginPanel').addClass('hidden');
-			$('#logoutPanel').removeClass('hidden');
-			
-			$('#sortName').on('click', toggleSortName);
-			$('#sortBirthday').on('click', toggleSortBirthday);
-			
-			//Setting the top bar to display the the logged in user's profile picture and name
-			FB.api('/me', {fields: 'id,name,birthday'}, function(response) {
-				$('#profilePic').attr('src', 'http://graph.facebook.com/' + response.id + '/picture?type=normal');
-				$('#nameBadge').text(response.name);
-			});
-			
-			//Grab and list the user's friends in the #friendBlock HTML element
-			loadCalendar();
-			listFriends();
-
-
-			//Dynamically filter friends as you type by attaching an event listener to the #friendSearch input field
-			$('#friendSearch').on("keyup", function() {
-				if(DEBUG_MODE) console.log('keypress handler triggered');
-				var inputText = $('#friendSearch').val();
-
-				$(".fb-user").each(function(){
-					var found = strCmp($(this).attr("data-block-id"),inputText);
-					if(found){
-						if(DEBUG_MODE) console.log('found');
-						$(this).removeClass('hidden');
-					}
-					else {
-						if(DEBUG_MODE) console.log('not found');
-						$(this).addClass('hidden');
-					}
-				});
-			});
+			postLoginSetup();
 		}
-
 		else {
 			if(DEBUG_MODE) console.log('Not authenticated');
+			removeOverlay();
 		}
-		
 	}, {scope:'email,user_birthday,user_likes,user_friends', return_scopes:true});
 	   /* Above are the permissions to request from the user logging in
 		  Only pops up with a FaceBook login dialog if they haven't given access before
@@ -73,6 +58,54 @@ function appLogin(){
 	   */
 }
 
+function postLoginSetup(){
+	removeOverlay();
+  /* Setting up the HTML/sections for each block of output after a successful login
+	 introBlock for displaying announcements/instructions and contains an input field (textbox)
+	 for searching/filtering friends
+  */
+	$('#introBlock').addClass('hidden');
+	$('#outputBlock').removeClass('hidden')
+					 .empty()
+					 .append('<br>Click on a friend to see their interests<br><br>')
+	$('#friendSearch').removeClass('hidden');
+	$('#searchTools').removeClass('hidden');
+	$('#friendBlock').removeClass('hidden');
+	$('#loginPanel').addClass('hidden');
+	$('#logoutPanel').removeClass('hidden');
+	
+	$('#sortName').on('click', toggleSortName);
+	$('#sortBirthday').on('click', toggleSortBirthday);
+	
+	//Setting the top bar to display the the logged in user's profile picture and name
+	FB.api('/me', {fields: 'id,name,birthday'}, function(response) {
+		$('#profilePic').attr('src', 'http://graph.facebook.com/' + response.id + '/picture?type=normal');
+		$('#nameBadge').text(response.name);
+	});
+	
+	//Grab and list the user's friends in the #friendBlock HTML element
+	loadCalendar();
+	listFriends();
+
+
+	//Dynamically filter friends as you type by attaching an event listener to the #friendSearch input field
+	$('#friendSearch').on("keyup", function() {
+		if(DEBUG_MODE) console.log('keypress handler triggered');
+		var inputText = $('#friendSearch').val();
+
+		$(".fb-user").each(function(){
+			var found = strCmp($(this).attr("data-block-id"),inputText);
+			if(found){
+				if(DEBUG_MODE) console.log('found');
+				$(this).removeClass('hidden');
+			}
+			else {
+				if(DEBUG_MODE) console.log('not found');
+				$(this).addClass('hidden');
+			}
+		});
+	});
+}
 
 /**
  ** Fills up the friendBlock with collapsible panels of the user's friends
@@ -264,6 +297,10 @@ function eventAlert(eventId){
 	}
 }
 
+/*
+  Loads zabuto_calendar with events stored in a local .js file 
+  (in this case holiday.js is imported before glink.js in index.html)
+*/
 function loadCalendar(){
 	$('#outputBlock').append('<br><a href = "#" onclick = "toggleVisibility(\'myCalendar\')">Click to View Calendar</a>');
 	$('#outputBlock').append('<div class = "hidden animated fadeIn" id = "myCalendar" style = "padding: 5% 7% 5% 7%;"><div id = "usr_calendar"></div></div>');
@@ -280,5 +317,13 @@ function loadCalendar(){
 			nav_icon:{prev:'<', next:'>'}
 		}
 	)});
-	
+}
+
+//Fades out the loading overlay and removes it when animation finishes.
+function removeOverlay(){
+	if($('.overlay').length){
+		$('.overlay').animateCss('fadeOut', function(){
+			$('.overlay').remove();
+		});
+	}
 }

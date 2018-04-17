@@ -7,6 +7,17 @@ window.fbAsyncInit = function() {
 	});
 	  
 	FB.AppEvents.logPageView();
+	
+	//Let's page finish loading before checking user's login status
+	window.onload = function(){
+		FB.getLoginStatus(function(response){
+		  if (response.status === 'connected') {
+			postLoginSetup();
+		  }else{
+			removeOverlay();
+		  }
+		});
+	}
 };
 
 (function(d, s, id){

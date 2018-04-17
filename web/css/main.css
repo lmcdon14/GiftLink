@@ -19,6 +19,13 @@ a {
 	text-shadow: 1px 1px #ffffff;
 }
 
+#overlayHeader {
+	position: relative;
+	top: 30%;
+	text-shadow: 1px 1px #ffffff;
+	font-size: 6vw;
+}
+
 #mainPanel {
     background: #ffffff;
     border: 1px solid #dddfe2;
@@ -96,6 +103,31 @@ input:focus::placeholder {
     border-color: #dddfe2;
     border-style: solid;
 	font-size: 12px;
+}
+
+.overlay{
+	position:absolute;
+	background:#e6e6ff;
+	left:0;
+	right:0;
+	top:0;
+	bottom:0;
+	z-index:3;
+}
+
+.loader {
+	position:relative;
+	left: 46.5%;
+    border: .5vw solid #f3f3f3;
+    border-top: .5vw solid #3b5998; 
+    border-radius: 50%;
+    width: 7vw;
+    height: 7vw;
+    animation: spin 1.2s linear infinite;
+}
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
 }
 
 .inner-panel {
