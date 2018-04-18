@@ -20,10 +20,10 @@
 </head>
 
   <body>
-	<div class="container-fluid" id="wrapper">
-        <h1 class="text-center" id="mainHeader">Gift<span style="color:#3b5998">Link</span></h1>
+	<div class="container-fluid" id="appWrapper">
+        <h1 class="text-center" id="appHeader">Gift<span style="color:#3b5998">Link</span></h1>
         <div class="container">
-            <div class="row" id="mainPanel">
+            <div class="row" id="appPane">
 				<div class="col-12" style="padding: 0">
 					<div class="inner-panel top-panel fluid-panel hidden" id="logoutPanel">
 						<span>
@@ -32,7 +32,7 @@
 						</span>
 						<button class="uibutton large confirm" id="logoutControl" onclick="FB.logout(appLogout)">Logout</button>
 					</div>
-					<div id="introBlock">
+					<div id="privacyPolicyBlock">
 						<h5 class="text-center" id="introMessage">Privacy Policy</h5>
 						<p class="text-center">
 
@@ -185,7 +185,7 @@
 					</div>
 					<div class="inner-panel bottom-panel" id="footerPanel">
 						<span>© 2018 Socially Gifted · </span>
-						<a href = "https://github.com/COSCS340/GiftLink/blob/master/PrivacyPolicy.md">Privacy Policy</a>
+						<a href = "javascript:history.back()">Return to home</a>
 					</div>
 				</div>
             </div>
