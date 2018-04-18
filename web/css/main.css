@@ -51,6 +51,13 @@ input:focus::placeholder {
 	padding: 5% 15px 5% 15px;
 }
 
+#overlayHeader {
+	position: relative;
+	top: 30%;
+	text-shadow: 1px 1px #ffffff;
+	font-size: 6vw;
+}
+
 /* Introduction message shown before login */
 #introMessage {
 	padding: 16px;
@@ -60,10 +67,6 @@ input:focus::placeholder {
 
 #privacyPolicyBody {
 	padding: 16px;
-}
-
-#wrapper {
-	padding: 5% 15px 5% 15px;
 }
 
 /* User profile picture shown in top panel after login */
@@ -116,6 +119,16 @@ input:focus::placeholder {
 }
 
 /* ===== Classes ===== */
+
+.overlay{
+	position:absolute;
+	background:#e6e6ff;
+	left:0;
+	right:0;
+	top:0;
+	bottom:0;
+	z-index:3;
+}
 
 /* Loading wheel */
 .loader {
