@@ -133,12 +133,6 @@ input:focus::placeholder {
 	100% { transform: rotate(360deg); }
 }
 
-
-/* Content hidden for login or logout state */
-.hidden {
-    display: none;
-}
-
 /* Panel within the main application pane */
 .inner-panel {
     background-color: #f6f7f9;
@@ -221,3 +215,8 @@ input:focus::placeholder {
 	border-top: 1px solid #dddfe2;
 	padding: 8px;
   }
+
+/* Content hidden for login or logout state */
+.hidden {
+    display: none;
+}
