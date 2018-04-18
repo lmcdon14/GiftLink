@@ -36,16 +36,16 @@
 	<title>GiftLink</title>
   </head>
   <body>
-  <div class = "overlay">
+  <div class="overlay">
 	  <h1 class="text-center animated fadeInDown" id="overlayHeader">Gift<span style="color:#3b5998">Link</span>
-		<div class = "loader text-center"></div>
+		<div class="loader text-center"></div>
 	  </h1>
 	 
   </div>
-	<div class="container-fluid" id="wrapper">
-        <h1 class="text-center" id="mainHeader">Gift<span style="color:#3b5998">Link</span></h1>
+	<div class="container-fluid" id="appWrapper">
+        <h1 class="text-center" id="appHeader">Gift<span style="color:#3b5998">Link</span></h1>
         <div class="container">
-            <div class="row" id="mainPanel">
+            <div class="row" id="appPane">
 				<div class="col-12" style="padding: 0">
 					<div class="inner-panel top-panel" id="loginPanel">
 						<button class="uibutton large confirm" id="loginControl" onclick="appLogin()">Login with Facebook</button>
@@ -64,7 +64,7 @@
 						<a class="sort" id="sortName" href="javascript:;">Name</a> · 
 						<a class="sort" id="sortBirthday" href="javascript:;">Birthday</a>
 					</div>
-					<div class="hidden" id="friendBlock" data-sort="0"></div>
+					<div class="hidden" id="friendBlock" data-sort="name-ascend"></div>
 					<div id="introBlock">
 						<h5 class="text-center" id="introMessage">Surprise your friends with the perfect gifts</h5>
 						<p class="text-center">
