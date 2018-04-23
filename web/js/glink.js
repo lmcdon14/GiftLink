@@ -1,0 +1,340 @@
+
+//Used to dynamically generate Amazon search links of a FaceBook user's interests
+var amazonLink = 'https://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords=';
+
+//Enable or disable output to console.log()
+const DEBUG_MODE =  1;
+
+/**
+ ** Extends animateCss to jQuery.
+ ** Allows for easily applying animations to elements
+ ** and can specify a function to execute when animation completes
+ **/
+$.fn.extend({
+  animateCss: function(animationName, callback) {
+    var animationEnd = (function(el) {
+      var animations = {
+        animation: 'animationend',
+        OAnimation: 'oAnimationEnd',
+        MozAnimation: 'mozAnimationEnd',
+        WebkitAnimation: 'webkitAnimationEnd',
+      };
+
+      for (var t in animations) {
+        if (el.style[t] !== undefined) {
+          return animations[t];
+        }
+      }
+    })(document.createElement('div'));
+
+    this.addClass('animated ' + animationName).one(animationEnd, function() {
+      $(this).removeClass('animated ' + animationName);
+
+      if (typeof callback === 'function') callback();
+    });
+
+    return this;
+  },
+});
+
+/**
+ ** Log user in to Facebook and begin reading data in
+ **/
+function appLogin(){
+	FB.login(function(response) {
+
+		if(response.status === 'connected'){
+			if(DEBUG_MODE) console.log('Logged in and authenticated');
+			postLoginSetup();
+		}
+		else {
+			if(DEBUG_MODE) console.log('Not authenticated');
+			removeOverlay();
+		}
+	}, {scope:'email,user_birthday,user_likes,user_friends', return_scopes:true});
+	   /* Above are the permissions to request from the user logging in
+		  Only pops up with a FaceBook login dialog if they haven't given access before
+		  or there are new permissions that they haven't granted access to
+	   */
+}
+
+function postLoginSetup(){
+	removeOverlay();
+  /* Setting up the HTML/sections for each block of output after a successful login
+	 introBlock for displaying announcements/instructions and contains an input field (textbox)
+	 for searching/filtering friends
+  */
+	$('#introBlock').addClass('hidden');
+	$('#outputBlock').removeClass('hidden')
+					 .empty()
+					 .append('<br>Click on a friend to see their interests<br><br>')
+	$('#friendSearch').removeClass('hidden');
+	$('#searchTools').removeClass('hidden');
+	$('#friendBlock').removeClass('hidden');
+	$('#loginPanel').addClass('hidden');
+	$('#logoutPanel').removeClass('hidden');
+	
+	$('#sortName').on('click', toggleSortName);
+	$('#sortBirthday').on('click', toggleSortBirthday);
+	
+	//Setting the top bar to display the the logged in user's profile picture and name
+	FB.api('/me', {fields: 'id,name,birthday'}, function(response) {
+		$('#profilePic').attr('src', 'http://graph.facebook.com/' + response.id + '/picture?type=normal');
+		$('#nameBadge').text(response.name);
+	});
+	
+	//Grab and list the user's friends in the #friendBlock HTML element
+	loadCalendar();
+	listFriends();
+
+
+	//Dynamically filter friends as you type by attaching an event listener to the #friendSearch input field
+	$('#friendSearch').on("keyup", function() {
+		if(DEBUG_MODE) console.log('keypress handler triggered');
+		var inputText = $('#friendSearch').val();
+
+		$(".fb-user").each(function(){
+			var found = strCmp($(this).attr("data-block-id"),inputText);
+			if(found){
+				if(DEBUG_MODE) console.log('found');
+				$(this).removeClass('hidden');
+			}
+			else {
+				if(DEBUG_MODE) console.log('not found');
+				$(this).addClass('hidden');
+			}
+		});
+	});
+}
+
+/**
+ ** Fills up the friendBlock with collapsible panels of the user's friends
+ **/
+function listFriends() {
+	FB.api('/me/friends', {fields: 'id,name,birthday'}, 
+		function (response) {
+			if(DEBUG_MODE) console.log(response);
+			
+			$('#friendBlock').empty();
+			var friend;
+			var friends = response.data.sort(sortFriends);
+			
+			for(friend in friends){
+				var user_id = friends[friend].id;
+				var name = friends[friend].name;
+				var birthday = friends[friend].birthday;
+				
+				//Wrapping each user in a unique div to make the search filtering easier
+				$('#friendBlock').append('<div class = "fb-user" data-block-id = "' + name + '"></div>');
+				
+				//jQuery unique to the current friend's block 
+				var query = "[data-block-id = '" + name + "']";
+				$(query).append(''
+								 + '<a data-toggle="collapse" data-target="#' + user_id + '-interests">'
+								 + '<div class="friend-panel fluid-panel" id="' + user_id + '-panel">'
+								 + '<span><img class="friend-pic" src="http://graph.facebook.com/' + user_id + '/picture?type=normal"></img>'
+								 + '<span class="friend-name">' + name + '</span></span><span class="friend-birthday">' + birthday + '</span></div></a>'
+								 
+								 + '<div class="collapse" id="' + user_id + '-interests">'
+								 + '<a data-toggle="collapse" data-target="#' + user_id + '-musicList">'
+								 + '<div class="interest-panel">Music</div></a>'
+								 + '<div class="collapse" id="' + user_id + '-musicList"></div>'
+								 
+								 + '<a data-toggle="collapse" data-target="#' + user_id + '-moviesList">'
+								 + '<div class="interest-panel">Movies</div></a>'
+								 + '<div class="collapse" id="' + user_id + '-moviesList"></div>'
+								 
+								 + '<a data-toggle="collapse" data-target="#' + user_id + '-televisionList">'
+								 + '<div class="interest-panel">Television</div></a>'
+								 + '<div class="collapse" id="' + user_id + '-televisionList"></div></div>'
+								);
+
+				$('#' + user_id + '-panel').on('click', {id: user_id}, listInterests);
+			}
+		}
+	);
+}
+
+/**
+ ** Logs user out of Facebook and removes associated data
+ **/
+function appLogout(response){
+	$('#introBlock').removeClass('hidden');
+	$('#outputBlock').addClass('hidden')
+					 .empty();
+	$('#friendSearch').addClass('hidden');
+	$('#searchTools').addClass('hidden');
+	$('#friendBlock').addClass('hidden');
+	$('#logoutPanel').addClass('hidden');
+	$('#loginPanel').removeClass('hidden');
+	$('#nameBadge').text('');
+	$('#profilePic').attr('src', '');
+}
+
+/**
+ ** Determines whether string b is a substring of a
+ ** @param {string} a The string to inspect
+ ** @param {string} b The substring for which to search
+ ** @return {bool} Whether the substring b was found in a
+ **/
+function strCmp(a, b) {
+	return (a.toLowerCase().indexOf(b.toLowerCase()) >= 0); 
+}
+
+/**
+ ** Toggles friends-sorting by name, ascending or descending
+ **/
+function toggleSortName() {
+	if ($('#friendBlock').attr('data-sort') != 'name-ascend')
+		$('#friendBlock').attr('data-sort', 'name-ascend');
+	else
+		$('#friendBlock').attr('data-sort', 'name-descend');
+	
+	listFriends();
+}
+
+/**
+ ** Toggles friends-sorting by birthday, ascending or descending
+ **/
+function toggleSortBirthday() {
+	if ($('#friendBlock').attr('data-sort') != 'bday-ascend')
+		$('#friendBlock').attr('data-sort', 'bday-ascend');
+	else
+		$('#friendBlock').attr('data-sort', 'bday-descend');
+	
+	listFriends();
+}
+
+/**
+ ** Compares two friend objects by name or by birthday
+ ** @param {Object} a First user to compare
+ ** @param {Object} b Second user to compare
+ ** @returns {int} The result of comparison (i.e. 1, 0, or -1)
+ **/
+function sortFriends(a, b) {
+	var sortby = $('#friendBlock').attr('data-sort');
+	
+	if (sortby == 'name-ascend') return a.name.localeCompare(b.name);
+	if (sortby == 'name-descend') return b.name.localeCompare(a.name);
+	if (sortby == 'bday-ascend') return (Date.parse(b.birthday) <= Date.parse(a.birthday) ? 1 : -1);
+	if (sortby == 'bday-descend') return (Date.parse(a.birthday) <= Date.parse(b.birthday) ? 1 : -1);
+}
+
+/**
+ ** Updates all user interests (wrapper for updateInterest)
+ ** @param {JSON} event JQuery event handler data object
+ **/
+function listInterests(event) {
+	updateInterest(event.data.id, 'music');
+	updateInterest(event.data.id, 'movies');
+	updateInterest(event.data.id, 'television');
+}
+
+
+/** 
+ ** Customizable function to get and update a user's interests from the appropriate endpoint
+ ** @param {int} user_id Graph API ID of user node
+ ** @param {string} interest Interest category to list
+ **/
+function updateInterest(user_id, interest) {
+	var endpoint = '/' + user_id + '/' + interest;
+	if(DEBUG_MODE) console.log(endpoint);
+	
+	var target;
+	if(interest == 'music'){ target = ('' + user_id + '-musicList'); }
+	else if(interest == 'television'){ target = ('' + user_id + '-televisionList'); }
+	else if(interest == 'movies'){ target = ('' + user_id + '-moviesList'); }
+
+	FB.api(endpoint, function(response){
+		if(response && !response.error){
+			listInterest(response, target);
+		}
+	});
+}
+
+
+/**
+ ** Iterates over data from a Graph API response, generates search urls, and
+ ** places links to each in the target element
+ ** @param {JSON} response Graph API edge, containing an array of user interests
+ ** @param {string} target ID of element to store list of interests
+ **/
+function listInterest(response, target) {
+	var query = '#' + target;
+	
+	if(DEBUG_MODE){
+		console.log(target);
+		console.log(query);
+		console.log(response);
+	}
+	
+	$(query).empty();
+	for(item in response.data) {
+		var name = response.data[item].name;
+		var sname = name.replace(/ /g, "+");
+		$(query).append('<div class="interest-item-panel">'
+						+ '<a class = "jqPlaceholder" target = "_blank" href = "" ></a>'
+						+ '</div>');
+		$('.jqPlaceholder').attr('href', amazonLink + sname);
+		$('.jqPlaceholder').html(name);
+		$('.jqPlaceholder').removeClass('jqPlaceholder');
+	}
+}
+
+
+function toggleVisibility(elemID){
+	query = '#' + elemID;
+	if($(query).hasClass('hidden')){
+		$(query).removeClass('hidden');
+	}
+	else {
+		$(query).addClass('hidden');
+	}
+}
+
+/** Used with zabuto calendar
+ ** Checks if an event exists on the date that
+ ** a user clicks and shows an alert with the
+ **	date and description of the event.
+ **/
+function eventAlert(eventId){
+	var day = $("#" + eventId);
+	var date = $("#" + eventId).data("date");
+	var hasEvent = day.data("hasEvent");
+	if(hasEvent){
+		var newDate = new Date(date);
+		console.log(day);
+		bootbox.alert({message:"<center><h1>" + newDate.toDateString() + "<br><br>" + day[0].title + "</h1></center>", backdrop:true});
+	}
+}
+
+/*
+  Loads zabuto_calendar with events stored in a local .js file 
+  (in this case holiday.js is imported before glink.js in index.html)
+*/
+function loadCalendar(){
+	$('#outputBlock').append('<br><a href = "#" onclick = "toggleVisibility(\'myCalendar\')">Click to View Calendar</a>');
+	$('#outputBlock').append('<div class = "hidden animated fadeIn" id = "myCalendar" style = "padding: 5% 7% 5% 7%;"><div id = "usr_calendar"></div></div>');
+
+	$('#usr_calendar').ready(function(){$('#usr_calendar').zabuto_calendar(
+		{
+			language: "en", 
+			show_previous:true, 
+			show_next:true,
+			data: holidayEvents,
+			today:true,
+			modal: true,
+			action: function(){ eventAlert(this.id); },
+			nav_icon:{prev:'<', next:'>'}
+		}
+	)});
+}
+
+//Fades out the loading overlay and removes it when animation finishes.
+function removeOverlay(){
+	if($('.overlay').length){
+		$('.overlay').animateCss('fadeOut', function(){
+			$('.overlay').remove();
+		});
+	}
+}

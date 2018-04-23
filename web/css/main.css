@@ -1,58 +1,236 @@
-#mainHeader{
-	font-family: 'Titillium Web', sans-serif;
-	padding-top: 5%;
+body {
+    background: #f7f7f7;
+	font-family: 'Open Sans', sans-serif;
 }
 
-#loginPanel{
-	border-style: solid;
-    border-width: 1px;
-	border-radius: 10px;
+/* Preloads images */
+body:before {
+	content: '';
+	display: none;
+	background-image: url('../images/search_icon_hover.png');
+	background-image: url('../images/search_icon_focus.png');
 }
 
-.button {
-   border: 1px solid #0a3c59;
-   background: #0059ff;
-   background: -webkit-gradient(linear, left top, left bottom, from(#3c7ffc), to(#0059ff));
-   background: -webkit-linear-gradient(top, #3c7ffc, #0059ff);
-   background: -moz-linear-gradient(top, #3c7ffc, #0059ff);
-   background: -ms-linear-gradient(top, #3c7ffc, #0059ff);
-   background: -o-linear-gradient(top, #3c7ffc, #0059ff);
-   background-image: -ms-linear-gradient(top, #3c7ffc 0%, #0059ff 100%);
-   padding: 15px 30px;
-   -webkit-border-radius: 13px;
-   -moz-border-radius: 13px;
-   border-radius: 13px;
-   -webkit-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
-   -moz-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
-   box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
-   text-shadow: #7ea4bd 0 1px 0;
-   color: #ffffff;
-   font-size: 19px;
-   font-family: helvetica, serif;
-   text-decoration: none;
-   vertical-align: middle;
-   }
-.button:hover {
-   border: 1px solid #0a3c59;
-   text-shadow: #1e4158 0 1px 0;
-   background: #3e779d;
-   background: -webkit-gradient(linear, left top, left bottom, from(#65a9d7), to(#3e779d));
-   background: -webkit-linear-gradient(top, #65a9d7, #3e779d);
-   background: -moz-linear-gradient(top, #65a9d7, #3e779d);
-   background: -ms-linear-gradient(top, #65a9d7, #3e779d);
-   background: -o-linear-gradient(top, #65a9d7, #3e779d);
-   background-image: -ms-linear-gradient(top, #65a9d7 0%, #3e779d 100%);
-   color: #fff;
-   }
-.button:active {
-   text-shadow: #1e4158 0 1px 0;
-   border: 1px solid #0a3c59;
-   background: #65a9d7;
-   background: -webkit-gradient(linear, left top, left bottom, from(#3e779d), to(#3e779d));
-   background: -webkit-linear-gradient(top, #3e779d, #65a9d7);
-   background: -moz-linear-gradient(top, #3e779d, #65a9d7);
-   background: -ms-linear-gradient(top, #3e779d, #65a9d7);
-   background: -o-linear-gradient(top, #3e779d, #65a9d7);
-   background-image: -ms-linear-gradient(top, #3e779d 0%, #65a9d7 100%);
-   color: #fff;
-   }
+/* ===== Global ===== */
+
+a {
+	color: #365899;
+}
+
+input::placeholder {
+	color: #9d9fa2;
+	opacity: 1;
+	
+	-webkit-transition: color 0.3s ease;
+	-moz-transition: color 0.3s ease;
+	-o-transition: color 0.3s ease;
+	transition: color 0.3s ease;
+}
+input:focus::placeholder {
+	color: #dddfe2;
+	opacity: 1;
+}
+
+/* ===== Elements ===== */
+
+/* Displays application name */
+#appHeader {
+	text-shadow: 1px 1px #ffffff;
+}
+
+/* Main application pane */
+#appPane {
+    background: #ffffff;
+    border: 1px solid #dddfe2;
+    border-radius: 3px;
+    padding: 0;
+}
+
+/* Aligns application pane */
+#appWrapper {
+	padding: 5% 15px 5% 15px;
+}
+
+#overlayHeader {
+	position: relative;
+	top: 30%;
+	text-shadow: 1px 1px #ffffff;
+	font-size: 6vw;
+}
+
+/* Introduction message shown before login */
+#introMessage {
+	padding: 16px;
+	font-weight: 500;
+	color: #666666;
+}
+
+#privacyPolicyBody {
+	padding: 16px;
+}
+
+/* User profile picture shown in top panel after login */
+#profilePic {
+    border: 1px solid #dddfe2;
+    border-radius: 2px;
+}
+
+/* User name shown in top panel after login */
+#nameBadge {
+    padding: 6px;
+    font-weight: 500;
+}
+
+/* Friends list searchbar */
+#friendSearch {
+	padding: 4px 4px 4px 36px;
+    width: 100%;
+    border-width: 1px 0 0 0;
+    border-color: #dddfe2;
+    border-style: solid;
+	background-repeat: no-repeat;
+    background-position: 4px center;
+	background-size: 28px;
+    background-image: url('../images/search_icon_base.png');
+	
+	-webkit-transition: background-image 0.3s ease;
+	-moz-transition: background-image 0.3s ease;
+	-o-transition: background-image 0.3s ease;
+	transition: background-image 0.3s ease;
+}
+#friendSearch:hover {
+	background-image: url('../images/search_icon_hover.png');
+	outline: 0;
+}
+#friendSearch:focus {
+	background-image: url('../images/search_icon_focus.png');
+	outline: 0;
+}
+
+/* Panel offering tools to change friends list display */
+#searchTools {
+	padding: 4px 8px;
+	width: 100%;
+	background-color: #f6f7f9;
+	border-width: 1px 0 0 0;
+    border-color: #dddfe2;
+    border-style: solid;
+	font-size: 12px;
+}
+
+/* ===== Classes ===== */
+
+.overlay{
+	position:absolute;
+	background:#e6e6ff;
+	left:0;
+	right:0;
+	top:0;
+	bottom:0;
+	z-index:3;
+}
+
+/* Loading wheel */
+.loader {
+	position: relative;
+	left: 46.5%;
+	border: .5vw solid #f3f3f3;
+	border-top: .5vw solid #3b5998;
+	border-radius: 50%;
+	width: 7vw;
+	height: 7vw;
+	animation: spin 1.2s linear infinite;
+}
+
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
+
+/* Panel within the main application pane */
+.inner-panel {
+    background-color: #f6f7f9;
+	height: 44px;
+    padding: 8px;
+    text-align: center;
+}
+
+/* Panel at the top of the main application pane */
+.top-panel {
+	border-bottom: 1px solid #dddfe2;
+    border-radius: 2px 2px 0 0;
+}
+
+/* Panel at the bottom of the main application pane */
+.bottom-panel {
+	border-top: 1px solid #dddfe2;
+    border-radius: 0 0 2px 2px;
+}
+
+/* Panel which fluidly justifies its contents */
+.fluid-panel {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Panel containing basic friend information; activates
+   drop-down list of interest categories */
+.friend-panel {
+	border-top: 1px solid #dddfe2;
+	padding: 8px;
+	cursor: pointer;
+}
+.friend-panel:hover {
+	background: #dfe3ee;
+	-webkit-transition: background-color 0.3s ease;
+	-moz-transition: background-color 0.3s ease;
+	-o-transition: background-color 0.3s ease;
+	transition: background-color 0.3s ease;
+}
+
+/* Friend panel profile picture */
+.friend-pic {
+	border: 1px solid #dddfe2;
+    border-radius: 2px;
+	height: 75px;
+	width: auto;
+}
+
+/* Friend panel nametag */
+.friend-name {
+	padding: 6px;
+	font-weight: 500;
+}
+
+/* Friend panel birthday tag */
+.friend-birthday {
+	padding: 6px;
+}
+
+/* Panel labelling an interest category; activates 
+   drop-down list of interest items */
+.interest-panel {
+	background: #eeeeee;
+	border-top: 1px solid #dddfe2;
+	padding: 8px;
+	cursor: pointer;
+}
+.interest-panel:hover {
+	background: #dddddd;
+	-webkit-transition: background-color 0.3s ease;
+	-moz-transition: background-color 0.3s ease;
+	-o-transition: background-color 0.3s ease;
+	transition: background-color 0.3s ease;
+}
+
+/* Panel labelling an interest item, containing
+   generated search links */
+.interest-item-panel {
+	border-top: 1px solid #dddfe2;
+	padding: 8px;
+  }
+
+/* Content hidden for login or logout state */
+.hidden {
+    display: none;
+}
