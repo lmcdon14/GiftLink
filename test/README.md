@@ -8,4 +8,4 @@ These tests use the Google Chrome web browser and require a corresponding web dr
 
 These tests can be run from the command line while in the main GiftLink directory using:
 
-'python3 -m unittest'
+`python3 -m unittest`
